@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { canAccessApp } from '@/lib/subscription'
 import Sidebar from '@/components/sidebar'
 
 export default async function AppLayout({ children }) {
@@ -11,8 +12,7 @@ export default async function AppLayout({ children }) {
   if (!profile) redirect('/login')
 
   const est = profile?.establishment
-  const ok = ['CONFIRMED', 'RECEIVED', 'ACTIVE'].includes(est?.subscription_status)
-  if (!ok) redirect('/checkout')
+  if (!canAccessApp(est)) redirect('/checkout')
 
   const profileFlat = { ...profile, business_name: est?.name }
 

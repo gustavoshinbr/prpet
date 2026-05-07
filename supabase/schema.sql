@@ -13,10 +13,13 @@ create table if not exists public.establishments (
   owner_id uuid not null references auth.users(id) on delete cascade,
   asaas_customer_id text,
   asaas_subscription_id text,
-  subscription_status text default 'PENDING',
+  subscription_status text default 'TRIAL',
   payment_link text,
   created_at timestamptz default now()
 );
+
+alter table public.establishments
+  alter column subscription_status set default 'TRIAL';
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
@@ -130,8 +133,8 @@ begin
   v_role := coalesce(new.raw_user_meta_data->>'role', 'admin');
 
   if v_role = 'admin' then
-    insert into public.establishments (name, owner_id)
-    values (coalesce(new.raw_user_meta_data->>'business_name', 'Meu Petshop'), new.id)
+    insert into public.establishments (name, owner_id, subscription_status)
+    values (coalesce(new.raw_user_meta_data->>'business_name', 'Meu Petshop'), new.id, 'TRIAL')
     returning id into new_business_id;
   else
     new_business_id := (new.raw_user_meta_data->>'business_id')::uuid;

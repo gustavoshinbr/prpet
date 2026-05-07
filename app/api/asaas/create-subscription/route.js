@@ -15,6 +15,15 @@ export async function POST() {
     const est = prof.establishment
     let asaasCustomerId = est?.asaas_customer_id
 
+    if (est?.asaas_subscription_id) {
+      const payment = await getLatestPayment(est.asaas_subscription_id)
+      return NextResponse.json({
+        ok: true,
+        invoiceUrl: est.payment_link || payment?.invoiceUrl,
+        subscriptionId: est.asaas_subscription_id,
+      })
+    }
+
     if (!asaasCustomerId) {
       const customer = await createCustomer({
         name: prof.full_name,
