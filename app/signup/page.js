@@ -33,8 +33,8 @@ export default function SignupPage() {
         },
       })
       if (error) throw error
-      toast.success('Conta criada! Seu teste gratis de 7 dias comecou.')
-      router.push('/dashboard')
+      toast.success('Conta criada! Escolha como deseja comecar.')
+      router.push('/checkout')
       router.refresh()
     } catch (err) {
       toast.error(err.message || 'Erro ao criar conta')
@@ -53,7 +53,7 @@ export default function SignupPage() {
             <PawPrint className="text-white w-8 h-8" />
           </div>
           <CardTitle className="text-2xl">Crie sua conta</CardTitle>
-          <p className="text-sm text-gray-500">7 dias gratis. Depois R$ 80,00/mes.</p>
+          <p className="text-sm text-gray-500">Teste gratis por 7 dias ou assine por R$ 80,00/mes.</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-3">
