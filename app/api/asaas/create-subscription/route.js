@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server'
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { createCustomer, createSubscription, getLatestPayment } from '@/lib/asaas'
 
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
+
 export async function POST() {
   try {
     const supabase = await createClient()
